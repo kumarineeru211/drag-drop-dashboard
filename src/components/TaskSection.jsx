@@ -58,7 +58,7 @@ const TaskSection = ({ title, section }) => {
       {/* Tasks or No Tasks message */}
       {tasks.length ? (
         tasks.map((task, index) => (
-          <TaskCard key={task.id} task={task} index={index} />
+          <TaskCard key={task.id} task={task} index={index}  section={section}/>
         ))
       ) : (
         <Typography>No tasks available</Typography>

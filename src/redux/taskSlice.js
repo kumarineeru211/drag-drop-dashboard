@@ -14,12 +14,12 @@ const loadTasksFromLocalStorage = () => {
 // Initial state (we try to load from localStorage first)
 const initialState = {
   tasks: loadTasksFromLocalStorage() || {
-    todo: [], // Filtered tasks
+    todo: [],
     inProgress: [],
     done: [],
   },
   allTasks: loadTasksFromLocalStorage() || {
-    todo: [], // Backup for unfiltered tasks
+    todo: [],
     inProgress: [],
     done: [],
   },
@@ -54,6 +54,47 @@ const taskSlice = createSlice({
       saveTasksToLocalStorage(state.tasks); // Save to localStorage
     },
 
+    // Edit an existing task
+editTask: (state, action) => {
+  const { section, taskId, updatedTask } = action.payload;
+
+  // Ensure the section exists
+  if (state.tasks[section]) {
+    const updateTaskInSection = (taskList) => {
+      return taskList.map((task) =>
+        task.id === taskId ? { ...task, ...updatedTask } : task
+      );
+    };
+
+    state.tasks[section] = updateTaskInSection(state.tasks[section]);
+    state.allTasks[section] = updateTaskInSection(state.allTasks[section]);
+
+    saveTasksToLocalStorage(state.tasks); // Save to localStorage
+  } else {
+    console.error(`Section ${section} is not defined.`);
+  }
+},
+
+// Delete an existing task
+deleteTask: (state, action) => {
+  const { section, taskId } = action.payload;
+
+  // Ensure the section exists
+  if (state.tasks[section]) {
+    const removeTaskFromSection = (taskList) =>
+      taskList.filter((task) => task.id !== taskId);
+
+    state.tasks[section] = removeTaskFromSection(state.tasks[section]);
+    state.allTasks[section] = removeTaskFromSection(state.allTasks[section]);
+
+    saveTasksToLocalStorage(state.tasks); // Save to localStorage
+  } else {
+    console.error(`Section ${section} is not defined.`);
+  }
+},
+
+
+    // Filter tasks by priority and date
     filterTasks: (state, action) => {
       const { priority, date } = action.payload;
 
@@ -96,6 +137,7 @@ const taskSlice = createSlice({
   },
 });
 
-export const { addTask, moveTask, filterTasks } = taskSlice.actions;
+// Exporting the actions for use in components
+export const { addTask, moveTask, editTask, deleteTask, filterTasks } = taskSlice.actions;
 
 export default taskSlice.reducer;
