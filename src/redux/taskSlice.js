@@ -97,23 +97,30 @@ deleteTask: (state, action) => {
 filterTasks: (state, action) => {
   const { priority, date, searchTerm } = action.payload;
 
+  // Helper function to filter tasks based on priority and date
+  const filterByPriorityAndDate = (tasks) => {
   const today = new Date();
-  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
-  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6);
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-  const filterByCriteria = (tasks) => {
+    // Get the start and end of the current week (assuming Sunday as the first day)
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); // Sunday
+    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6); // Saturday
+
+    // Get the start and end of the current month
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 1st day of the month
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
+
     return tasks.filter((task) => {
+      // Match priority or show all tasks if 'All' is selected
       const matchesPriority = priority === 'All' || task.priority === priority;
 
+      // Match date criteria (Today, This Week, This Month)
       const taskDate = new Date(task.date);
       let matchesDate = true;
 
       if (date === 'Today') {
-        matchesDate = taskDate.toDateString() === today.toDateString();
+        matchesDate = taskDate.toDateString() === new Date().toDateString(); // Task date matches today's date
       } else if (date === 'This Week') {
-        matchesDate = taskDate >= startOfWeek && taskDate <= endOfWeek;
+        matchesDate = taskDate >= startOfWeek && taskDate <= endOfWeek; // Task date is within the current week
       } else if (date === 'This Month') {
         matchesDate = taskDate >= startOfMonth && taskDate <= endOfMonth;
       }
@@ -127,11 +134,15 @@ filterTasks: (state, action) => {
     });
   };
 
-  state.tasks.todo = filterByCriteria(state.allTasks.todo);
-  state.tasks.inProgress = filterByCriteria(state.allTasks.inProgress);
-  state.tasks.done = filterByCriteria(state.allTasks.done);
-},
- 
+  // Apply the filter on each task section using the original unfiltered tasks (allTasks)
+  state.tasks.todo = filterByPriorityAndDate(state.allTasks.todo);
+  state.tasks.inProgress = filterByPriorityAndDate(state.allTasks.inProgress);
+  state.tasks.done = filterByPriorityAndDate(state.allTasks.done);
+
+  
+}
+
+
 
   },
 });

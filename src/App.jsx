@@ -1,5 +1,5 @@
 import { Box, TextField, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search'; // Import the search icon
+import SearchIcon from '@mui/icons-material/Search';
 import Sidebar from './components/Sidebar';
 import TaskSection from './components/TaskSection';
 import TaskFilter from './components/TaskFilter';
@@ -10,16 +10,30 @@ import { useState } from 'react';
 
 const App = () => {
   const dispatch = useDispatch();
+  
+  // State for search, priority, and date filters
   const [searchTerm, setSearchTerm] = useState('');
+  const [priority, setPriority] = useState('All');
+  const [date, setDate] = useState('Today');
 
   const { todo, inProgress, done } = useSelector((state) => state.tasks.tasks);
 
+  // Function to handle filter changes (priority, date)
+  const handleFilterChange = (newPriority, newDate) => {
+    setPriority(newPriority);
+    setDate(newDate);
+
+    // Dispatch the filter action with priority, date, and search term
+    dispatch(filterTasks({ priority: newPriority, date: newDate, searchTerm }));
+  };
+
+  // Function to handle search input changes
   const handleSearchChange = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
 
-    // Dispatch filter action with the updated search term
-    dispatch(filterTasks({ priority: 'All', date: '', searchTerm: term }));
+    // Dispatch the filter action with search term, priority, and date
+    dispatch(filterTasks({ searchTerm: term, priority, date }));
   };
 
   const handleDragEnd = (result) => {
@@ -69,6 +83,7 @@ const App = () => {
 
         {/* Main content */}
         <Box display="flex" flexDirection="column" width="100%" p={2} ml="280px">
+          {/* Search Field */}
           <TextField
             variant="outlined"
             size="small"
@@ -82,22 +97,20 @@ const App = () => {
                 </InputAdornment>
               ),
               style: {
-                backgroundColor: '#f8f8f8', // Light gray background like the image
+                backgroundColor: '#f8f8f8', // Light gray background
                 borderRadius: '30px', // Rounded corners
                 borderColor: 'transparent', // Remove border
                 padding: '10px 20px', // Add padding for better spacing
               },
             }}
             sx={{
-              width: '300px', 
-               
+              width: '300px',
             }}
           />
 
           <h1>Mobile App</h1>
-
-          {/* TaskFilter component */}
-          <TaskFilter onFilterChange={() => {}} />
+          {/* TaskFilter component with handleFilterChange function */}
+          <TaskFilter onFilterChange={handleFilterChange} />
 
           <Box display="flex" flexDirection="row" width="100%">
             {/* To Do Task Section */}
