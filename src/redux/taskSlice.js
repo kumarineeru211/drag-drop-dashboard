@@ -94,46 +94,53 @@ deleteTask: (state, action) => {
 },
 
 
-    // Filter tasks by priority and date
-    filterTasks: (state, action) => {
-      const { priority, date } = action.payload;
+filterTasks: (state, action) => {
+  const { priority, date } = action.payload;
 
-      // Helper function to filter tasks based on priority and date
-      const filterByPriorityAndDate = (tasks) => {
-        const today = new Date();
-        const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  // Helper function to filter tasks based on priority and date
+  const filterByPriorityAndDate = (tasks) => {
+    const today = new Date();
 
-        return tasks.filter((task) => {
-          // Check if task matches the selected priority
-          const matchesPriority = priority === 'All' || task.priority === priority;
+    // Get the start and end of the current week (assuming Sunday as the first day)
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); // Sunday
+    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6); // Saturday
 
-          // Check if task matches the selected date filter
-          const taskDate = new Date(task.date); // Ensure `task.date` is in a valid date format
-          let matchesDate = true;
+    // Get the start and end of the current month
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 1st day of the month
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
 
-          if (date === 'Today') {
-            matchesDate = taskDate.toDateString() === today.toDateString(); // Compare if task date is today
-          } else if (date === 'This Week') {
-            matchesDate = taskDate >= startOfWeek && taskDate <= today; // Task date is within this week
-          } else if (date === 'This Month') {
-            matchesDate = taskDate >= startOfMonth && taskDate <= today; // Task date is within this month
-          }
+    return tasks.filter((task) => {
+      // Check if task matches the selected priority
+      const matchesPriority = priority === 'All' || task.priority === priority;
 
-          return matchesPriority && matchesDate;
-        });
-      };
+      // Ensure `task.date` is in a valid date format
+      const taskDate = new Date(task.date);
+      let matchesDate = true;
 
-      // Apply the filter on each task section using the original unfiltered tasks (allTasks)
-      state.tasks.todo = filterByPriorityAndDate(state.allTasks.todo);
-      state.tasks.inProgress = filterByPriorityAndDate(state.allTasks.inProgress);
-      state.tasks.done = filterByPriorityAndDate(state.allTasks.done);
+      // Apply the date filtering logic based on the selected date filter
+      if (date === 'Today') {
+        matchesDate = taskDate.toDateString() === new Date().toDateString(); // Task date matches today's date
+      } else if (date === 'This Week') {
+        matchesDate = taskDate >= startOfWeek && taskDate <= endOfWeek; // Task date is within the current week
+      } else if (date === 'This Month') {
+        matchesDate = taskDate >= startOfMonth && taskDate <= endOfMonth; // Task date is within the current month
+      }
 
-      // Log filtered tasks for debugging
-      console.log('Filtered TODO:', state.tasks.todo);
-      console.log('Filtered InProgress:', state.tasks.inProgress);
-      console.log('Filtered Done:', state.tasks.done);
-    },
+      return matchesPriority && matchesDate;
+    });
+  };
+
+  // Apply the filter on each task section using the original unfiltered tasks (allTasks)
+  state.tasks.todo = filterByPriorityAndDate(state.allTasks.todo);
+  state.tasks.inProgress = filterByPriorityAndDate(state.allTasks.inProgress);
+  state.tasks.done = filterByPriorityAndDate(state.allTasks.done);
+
+  // Log filtered tasks for debugging
+  console.log('Filtered TODO:', state.tasks.todo);
+  console.log('Filtered InProgress:', state.tasks.inProgress);
+  console.log('Filtered Done:', state.tasks.done);
+},
+
   },
 });
 

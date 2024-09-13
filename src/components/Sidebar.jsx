@@ -16,7 +16,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div style={{ width: '250px', padding: '20px', backgroundColor: '#f5f5f5', height: '100%' }}>
+    <div style={{ width: '230px', padding: '20px', backgroundColor: '#f5f5f5', height: '100%' }}>
       <Typography variant="h6" style={{ marginBottom: '20px', fontWeight: 'bold' }}>Project M.</Typography>
       
       <List>

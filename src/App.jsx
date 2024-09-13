@@ -76,10 +76,23 @@ const App = () => {
     <DragDropContext onDragEnd={handleDragEnd}>
       <Box display="flex">
         {/* Sidebar component */}
-        <Sidebar />
-        <Box display="flex" flexDirection="column" width="100%" p={2}>
+        <Box 
+          sx={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            height: '100vh', 
+            width: '220px', // Adjust width as per your design
+            backgroundColor: '#f4f4f4' // Add background color if needed
+          }}
+        >
+          <Sidebar />
+        </Box>
+
+        {/* Main content */}
+        <Box display="flex" flexDirection="column" width="100%" p={2} ml="280px">
             <h1>Mobile App</h1>
-          {/* TaskFilter co mponent with handleFilterChange function */}
+          {/* TaskFilter component with handleFilterChange function */}
           <TaskFilter onFilterChange={handleFilterChange} />
 
           <Box display="flex" flexDirection="row" width="100%">

@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { Box, Card, Typography, IconButton, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch } from 'react-redux';
-import { editTask, deleteTask } from '../redux/taskSlice'; // Assuming actions exist
+import { editTask, deleteTask } from '../redux/taskSlice';
 
 const TaskCard = ({ task, index, section }) => {
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ const TaskCard = ({ task, index, section }) => {
                   style={{
                     display: 'inline-block',
                     padding: '2px 8px',
-                    backgroundColor: task.priority === 'Low' ? '#FDEDD4' : '#FFB6B6', // Different color for Low/High priority
+                    backgroundColor: task.priority === 'Low' ? '#FDEDD4' : '#FFB6B6',
                     color: task.priority === 'Low' ? '#C29259' : '#D9534F',
                     borderRadius: '4px',
                     fontWeight: 'bold',
@@ -96,6 +96,11 @@ const TaskCard = ({ task, index, section }) => {
                 <Typography variant="body2" style={{ color: '#6B6B6B' }}>
                   {task.description}
                 </Typography>
+
+                {/* Task date and time */}
+                <Typography variant="body2" style={{ color: '#6B6B6B', marginTop: '8px' }}>
+                  Due: {new Date(task.date).toLocaleString()}
+                </Typography>
               </Box>
 
               {/* Three-dot menu icon */}
@@ -104,11 +109,7 @@ const TaskCard = ({ task, index, section }) => {
               </IconButton>
 
               {/* Menu for edit/delete */}
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                 <MenuItem onClick={handleEditOpen}>Edit</MenuItem>
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
               </Menu>
