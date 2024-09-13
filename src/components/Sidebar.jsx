@@ -1,9 +1,9 @@
 import { List, ListItem, ListItemIcon, ListItemText, Divider, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import SettingsIcon from '@mui/icons-material/Settings';
+
 import TaskIcon from '@mui/icons-material/Task';
 import MessageIcon from '@mui/icons-material/Message';
-import PeopleIcon from '@mui/icons-material/People';
+
 import { useState } from 'react';
 
 const Sidebar = () => {
@@ -16,9 +16,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div style={{ width: '230px', padding: '20px', backgroundColor: '#f5f5f5', height: '100%' }}>
-      <Typography variant="h6" style={{ marginBottom: '20px', fontWeight: 'bold' }}>Project M.</Typography>
-      
+    <div className="w-[230px] p-5 bg-gray-100 h-full">
+      <Typography variant="h6" className="mb-5 font-bold">Project M.</Typography>
+
+      {/* Main Menu Items */}
       <List>
         <ListItem button onClick={() => handleItemClick('Home')} selected={activeItem === 'Home'}>
           <ListItemIcon><HomeIcon /></ListItemIcon>
@@ -32,38 +33,70 @@ const Sidebar = () => {
           <ListItemIcon><TaskIcon /></ListItemIcon>
           <ListItemText primary="Tasks" />
         </ListItem>
-        
       </List>
 
-      <Divider style={{ margin: '20px 0' }} />
-      
-      <Typography variant="subtitle1" style={{ marginBottom: '10px', fontWeight: 'bold', color: '#6c757d' }}>MY PROJECTS</Typography>
-      
+      <Divider className="my-5" />
+
+      {/* My Projects */}
+      <Typography variant="subtitle1" className="mb-2 font-bold text-gray-500">MY PROJECTS</Typography>
+
       <List>
-        <ListItem button onClick={() => handleItemClick('Mobile App')} selected={activeItem === 'Mobile App'} style={{ borderRadius: '10px', backgroundColor: activeItem === 'Mobile App' ? '#e0e7ff' : 'transparent' }}>
-          <ListItemIcon><div style={{ width: '8px', height: '8px', backgroundColor: '#4CAF50', borderRadius: '50%' }}></div></ListItemIcon>
+        <ListItem 
+          button 
+          onClick={() => handleItemClick('Mobile App')} 
+          selected={activeItem === 'Mobile App'}
+          className={`rounded-lg ${activeItem === 'Mobile App' ? 'bg-indigo-100' : ''}`}
+        >
+          <ListItemIcon>
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          </ListItemIcon>
           <ListItemText primary="Mobile App" />
         </ListItem>
-        <ListItem button onClick={() => handleItemClick('Website Redesign')} selected={activeItem === 'Website Redesign'} style={{ borderRadius: '10px', backgroundColor: activeItem === 'Website Redesign' ? '#e0e7ff' : 'transparent' }}>
-          <ListItemIcon><div style={{ width: '8px', height: '8px', backgroundColor: '#FFC107', borderRadius: '50%' }}></div></ListItemIcon>
+
+        <ListItem 
+          button 
+          onClick={() => handleItemClick('Website Redesign')} 
+          selected={activeItem === 'Website Redesign'}
+          className={`rounded-lg ${activeItem === 'Website Redesign' ? 'bg-indigo-100' : ''}`}
+        >
+          <ListItemIcon>
+            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+          </ListItemIcon>
           <ListItemText primary="Website Redesign" />
         </ListItem>
-        <ListItem button onClick={() => handleItemClick('Design System')} selected={activeItem === 'Design System'} style={{ borderRadius: '10px', backgroundColor: activeItem === 'Design System' ? '#e0e7ff' : 'transparent' }}>
-          <ListItemIcon><div style={{ width: '8px', height: '8px', backgroundColor: '#9C27B0', borderRadius: '50%' }}></div></ListItemIcon>
+
+        <ListItem 
+          button 
+          onClick={() => handleItemClick('Design System')} 
+          selected={activeItem === 'Design System'}
+          className={`rounded-lg ${activeItem === 'Design System' ? 'bg-indigo-100' : ''}`}
+        >
+          <ListItemIcon>
+            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+          </ListItemIcon>
           <ListItemText primary="Design System" />
         </ListItem>
-        <ListItem button onClick={() => handleItemClick('Wireframes')} selected={activeItem === 'Wireframes'} style={{ borderRadius: '10px', backgroundColor: activeItem === 'Wireframes' ? '#e0e7ff' : 'transparent' }}>
-          <ListItemIcon><div style={{ width: '8px', height: '8px', backgroundColor: '#03A9F4', borderRadius: '50%' }}></div></ListItemIcon>
+
+        <ListItem 
+          button 
+          onClick={() => handleItemClick('Wireframes')} 
+          selected={activeItem === 'Wireframes'}
+          className={`rounded-lg ${activeItem === 'Wireframes' ? 'bg-indigo-100' : ''}`}
+        >
+          <ListItemIcon>
+            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+          </ListItemIcon>
           <ListItemText primary="Wireframes" />
         </ListItem>
       </List>
 
-      <div style={{ marginTop: 'auto', padding: '10px', borderRadius: '10px', backgroundColor: '#fffbe6' }}>
-        <Typography variant="body2" style={{ fontWeight: 'bold', color: '#ff9800' }}>Thoughts Time</Typography>
-        <Typography variant="body2" style={{ marginTop: '5px', color: '#6c757d' }}>
+      {/* Bottom Notice */}
+      <div className="mt-auto p-3 rounded-lg bg-yellow-50">
+        <Typography variant="body2" className="font-bold text-yellow-600">Thoughts Time</Typography>
+        <Typography variant="body2" className="mt-1 text-gray-500">
           We don't have any notice for you, till then you can share your thoughts with your peers.
         </Typography>
-        <button style={{ marginTop: '10px', padding: '5px 10px', backgroundColor: '#ff9800', color: '#fff', border: 'none', borderRadius: '5px' }}>Write a message</button>
+        <button className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded">Write a message</button>
       </div>
     </div>
   );

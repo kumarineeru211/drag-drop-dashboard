@@ -34,25 +34,31 @@ const AddTaskModal = ({ isOpen, onClose, section }) => {
 
   return (
     <Modal open={isOpen} onClose={onClose}>
-      <Box style={{ background: 'white', padding: '20px', width: '300px', margin: '100px auto' }}>
-        <Typography variant="h6">Add Task to {section}</Typography>
+      <Box className="bg-white p-5 w-80 mx-auto mt-24 rounded-lg shadow-lg">
+        <Typography variant="h6" className="mb-4">Add Task to {section}</Typography>
+
+        {/* Task Name Input */}
         <TextField
           label="Task Name"
           fullWidth
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
           margin="normal"
+          className="mb-4"
         />
+
+        {/* Description Input */}
         <TextField
           label="Description"
           fullWidth
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           margin="normal"
+          className="mb-4"
         />
 
-        {/* Add a Select dropdown for Priority */}
-        <FormControl fullWidth margin="normal">
+        {/* Priority Dropdown */}
+        <FormControl fullWidth margin="normal" className="mb-4">
           <InputLabel id="priority-label">Priority</InputLabel>
           <Select
             labelId="priority-label"
@@ -64,7 +70,7 @@ const AddTaskModal = ({ isOpen, onClose, section }) => {
           </Select>
         </FormControl>
 
-        {/* Add DateTime picker */}
+        {/* DateTime Picker */}
         <TextField
           label="Due Date and Time"
           type="datetime-local"
@@ -75,9 +81,16 @@ const AddTaskModal = ({ isOpen, onClose, section }) => {
             shrink: true,
           }}
           margin="normal"
+          className="mb-4"
         />
 
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        {/* Submit Button */}
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={handleSubmit} 
+          className="w-full bg-blue-500 text-white py-2 rounded-lg"
+        >
           Add Task
         </Button>
       </Box>

@@ -54,51 +54,31 @@ const TaskCard = ({ task, index, section }) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            style={{
-              marginBottom: '10px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              ...provided.draggableProps.style,
-            }}
+            className="mb-2 rounded-lg shadow-md"
+            style={provided.draggableProps.style}
           >
-            <Box padding={2} display="flex" justifyContent="space-between" alignItems="flex-start">
+            <Box className="p-4 flex justify-between items-start">
               <Box>
                 {/* Priority label */}
                 <Typography
                   variant="caption"
-                  style={{
-                    display: 'inline-block',
-                    padding: '2px 8px',
-                    backgroundColor: task.priority === 'Low' ? '#FDEDD4' : '#FFB6B6',
-                    color: task.priority === 'Low' ? '#C29259' : '#D9534F',
-                    borderRadius: '4px',
-                    fontWeight: 'bold',
-                    marginBottom: '8px',
-                  }}
+                  className={`inline-block px-2 py-1 rounded-md font-bold mb-2 ${task.priority === 'Low' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-200 text-red-700'}`}
                 >
                   {task.priority}
                 </Typography>
 
                 {/* Task title */}
-                <Typography
-                  variant="h6"
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    color: '#1A1A1A',
-                    marginBottom: '4px',
-                  }}
-                >
+                <Typography variant="h6" className="text-lg font-bold text-gray-900 mb-1">
                   {task.title}
                 </Typography>
 
                 {/* Task description */}
-                <Typography variant="body2" style={{ color: '#6B6B6B' }}>
+                <Typography variant="body2" className="text-gray-600">
                   {task.description}
                 </Typography>
 
                 {/* Task date and time */}
-                <Typography variant="body2" style={{ color: '#6B6B6B', marginTop: '8px' }}>
+                <Typography variant="body2" className="text-gray-600 mt-2">
                   Due: {new Date(task.date).toLocaleString()}
                 </Typography>
               </Box>
@@ -139,7 +119,9 @@ const TaskCard = ({ task, index, section }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose}>Cancel</Button>
-          <Button onClick={handleEditSave} color="primary">Save</Button>
+          <Button onClick={handleEditSave} color="primary">
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </>

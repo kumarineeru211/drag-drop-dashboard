@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Select, MenuItem, Button, Typography } from '@mui/material';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { FilterAlt as FilterAltIcon, CalendarToday as CalendarTodayIcon } from '@mui/icons-material';
 
 const TaskFilter = ({ onFilterChange }) => {
   const [filter, setFilter] = useState('All');
@@ -20,55 +18,41 @@ const TaskFilter = ({ onFilterChange }) => {
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-      <Box display="flex" alignItems="center">
+    <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center">
         {/* Filter Button */}
-        
-        <Button
-          variant="outlined"
-          startIcon={<FilterAltIcon />}
-          style={{ marginRight: '1rem', textTransform: 'none'}} // Remove button border
-        > 
-          <Select
-            value={filter}
-            onChange={handleFilterChange}
-            displayEmpty
-            renderValue={(value) => (
-              <Typography variant="body2">{value}</Typography>
-            )}
-            style={{ marginRight: '0.5rem', width: '100px', border: 'none' }} // Remove Select border
-            disableUnderline // Remove underline from Select
-          > 
-            <MenuItem value="All">All</MenuItem>
-            <MenuItem value="High">High Priority</MenuItem>
-            <MenuItem value="Low">Low Priority</MenuItem>
-          </Select>
-        </Button>
+        <div className="relative inline-block text-left mr-4">
+          <button className="inline-flex justify-center w-full px-3 py-2 bg-white border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <FilterAltIcon className="mr-1" />
+            <select
+              value={filter}
+              onChange={handleFilterChange}
+              className="bg-transparent outline-none cursor-pointer"
+            >
+              <option value="All">All</option>
+              <option value="High">High Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+          </button>
+        </div>
 
         {/* Date Filter Button */}
-        <Button
-          variant="outlined"
-          startIcon={<CalendarTodayIcon />}
-          style={{ textTransform: 'none', }} // Remove button border
-        >
-          <Select
-            variant="outlined"
-            value={date}
-            onChange={handleDateChange}
-            displayEmpty
-            renderValue={(value) => (
-              <Typography variant="body2">{value}</Typography>
-            )}
-            style={{ marginRight: '0.5rem', width: '120px',}} // Remove Select border
-            disableUnderline // Remove underline from Select
-          >
-            <MenuItem value="Today">Today</MenuItem>
-            <MenuItem value="This Week">This Week</MenuItem>
-            <MenuItem value="This Month">This Month</MenuItem>
-          </Select>
-        </Button>
-      </Box>
-    </Box>
+        <div className="relative inline-block text-left">
+          <button className="inline-flex justify-center w-full px-3 py-2 bg-white border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <CalendarTodayIcon className="mr-1" />
+            <select
+              value={date}
+              onChange={handleDateChange}
+              className="bg-transparent outline-none cursor-pointer"
+            >
+              <option value="Today">Today</option>
+              <option value="This Week">This Week</option>
+              <option value="This Month">This Month</option>
+            </select>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

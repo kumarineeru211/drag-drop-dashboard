@@ -66,23 +66,14 @@ const App = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Box display="flex">
+      <div className="flex">
         {/* Sidebar component */}
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            height: '100vh',
-            width: '220px',
-            backgroundColor: '#f4f4f4',
-          }}
-        >
+        <div className="fixed top-0 left-0 h-screen w-[220px] bg-gray-100">
           <Sidebar />
-        </Box>
-
+        </div>
+        
         {/* Main content */}
-        <Box display="flex" flexDirection="column" width="100%" p={2} ml="280px">
+        <div className="flex flex-col w-full p-4 ml-[270px]">
           {/* Search Field */}
           <TextField
             variant="outlined"
@@ -108,15 +99,19 @@ const App = () => {
             }}
           />
 
-          <h1>Mobile App</h1>
+          <h1 className="text-3xl font-bold mt-4 mb-3">Mobile App</h1>
           {/* TaskFilter component with handleFilterChange function */}
           <TaskFilter onFilterChange={handleFilterChange} />
 
-          <Box display="flex" flexDirection="row" width="100%">
+          <div className="flex w-full">
             {/* To Do Task Section */}
             <Droppable droppableId="todo">
               {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps} style={{ width: '33%' }}>
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="w-1/3"
+                >
                   <TaskSection title="To Do" tasks={getTasksForSection('todo')} section="todo" />
                   {provided.placeholder}
                 </div>
@@ -126,7 +121,11 @@ const App = () => {
             {/* In Progress Task Section */}
             <Droppable droppableId="inProgress">
               {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps} style={{ width: '33%' }}>
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="w-1/3"
+                >
                   <TaskSection title="In Progress" tasks={getTasksForSection('inProgress')} section="inProgress" />
                   {provided.placeholder}
                 </div>
@@ -136,15 +135,19 @@ const App = () => {
             {/* Done Task Section */}
             <Droppable droppableId="done">
               {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps} style={{ width: '33%' }}>
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="w-1/3"
+                >
                   <TaskSection title="Done" tasks={getTasksForSection('done')} section="done" />
                   {provided.placeholder}
                 </div>
               )}
             </Droppable>
-          </Box>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </div>
     </DragDropContext>
   );
 };
