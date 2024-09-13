@@ -95,51 +95,43 @@ deleteTask: (state, action) => {
 
 
 filterTasks: (state, action) => {
-  const { priority, date } = action.payload;
+  const { priority, date, searchTerm } = action.payload;
 
-  // Helper function to filter tasks based on priority and date
-  const filterByPriorityAndDate = (tasks) => {
-    const today = new Date();
+  const today = new Date();
+  const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+  const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6);
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-    // Get the start and end of the current week (assuming Sunday as the first day)
-    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()); // Sunday
-    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6); // Saturday
-
-    // Get the start and end of the current month
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 1st day of the month
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
-
+  const filterByCriteria = (tasks) => {
     return tasks.filter((task) => {
-      // Check if task matches the selected priority
       const matchesPriority = priority === 'All' || task.priority === priority;
 
-      // Ensure `task.date` is in a valid date format
       const taskDate = new Date(task.date);
       let matchesDate = true;
 
-      // Apply the date filtering logic based on the selected date filter
       if (date === 'Today') {
-        matchesDate = taskDate.toDateString() === new Date().toDateString(); // Task date matches today's date
+        matchesDate = taskDate.toDateString() === today.toDateString();
       } else if (date === 'This Week') {
-        matchesDate = taskDate >= startOfWeek && taskDate <= endOfWeek; // Task date is within the current week
+        matchesDate = taskDate >= startOfWeek && taskDate <= endOfWeek;
       } else if (date === 'This Month') {
-        matchesDate = taskDate >= startOfMonth && taskDate <= endOfMonth; // Task date is within the current month
+        matchesDate = taskDate >= startOfMonth && taskDate <= endOfMonth;
       }
 
-      return matchesPriority && matchesDate;
+      // Search by term in task title or description
+      const matchesSearch = !searchTerm || 
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return matchesPriority && matchesDate && matchesSearch;
     });
   };
 
-  // Apply the filter on each task section using the original unfiltered tasks (allTasks)
-  state.tasks.todo = filterByPriorityAndDate(state.allTasks.todo);
-  state.tasks.inProgress = filterByPriorityAndDate(state.allTasks.inProgress);
-  state.tasks.done = filterByPriorityAndDate(state.allTasks.done);
-
-  // Log filtered tasks for debugging
-  console.log('Filtered TODO:', state.tasks.todo);
-  console.log('Filtered InProgress:', state.tasks.inProgress);
-  console.log('Filtered Done:', state.tasks.done);
+  state.tasks.todo = filterByCriteria(state.allTasks.todo);
+  state.tasks.inProgress = filterByCriteria(state.allTasks.inProgress);
+  state.tasks.done = filterByCriteria(state.allTasks.done);
 },
+ 
 
   },
 });

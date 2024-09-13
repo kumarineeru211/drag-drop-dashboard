@@ -1,60 +1,38 @@
-import { Box } from '@mui/material';
+import { Box, TextField, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search'; // Import the search icon
 import Sidebar from './components/Sidebar';
 import TaskSection from './components/TaskSection';
 import TaskFilter from './components/TaskFilter';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { moveTask, filterTasks } from './redux/taskSlice';
+import { useState } from 'react';
 
 const App = () => {
   const dispatch = useDispatch();
-  
-  // Retrieve tasks from the Redux store
-  const { todo, inProgress, done } = useSelector(state => state.tasks.tasks);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Log the current state of tasks for debugging
-  console.log("Todo:", todo);
-  console.log("InProgress:", inProgress);
-  console.log("Done:", done);
+  const { todo, inProgress, done } = useSelector((state) => state.tasks.tasks);
 
-  // Function to handle filter changes (priority, date)
-  const handleFilterChange = (priority, date) => {
-    // Dispatch the filter action when filter options change
-    dispatch(filterTasks({ priority, date }));
+  const handleSearchChange = (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    // Dispatch filter action with the updated search term
+    dispatch(filterTasks({ priority: 'All', date: '', searchTerm: term }));
   };
 
-  // Function to handle task dragging
   const handleDragEnd = (result) => {
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
 
-    // Identify the source tasks array based on the droppableId
     let sourceTasks;
     if (source.droppableId === 'todo') sourceTasks = todo;
     else if (source.droppableId === 'inProgress') sourceTasks = inProgress;
     else if (source.droppableId === 'done') sourceTasks = done;
 
-    // Log the sourceTasks and draggableId for debugging
-    console.log('Source Tasks:', sourceTasks);
-    console.log('draggableId:', draggableId);
-
-    // Ensure that sourceTasks is defined
-    if (!sourceTasks) {
-      console.error(`Source tasks not found for droppableId: ${source.droppableId}`);
-      return;
-    }
-
-    // Find the task being dragged
-    const task = sourceTasks.find(t => t.id === draggableId);
-
-    // If the task is not found, log the error and return
-    if (!task) {
-      console.error(`Task with id ${draggableId} not found in sourceTasks`);
-      return;
-    }
-
-    // Handle task movement only if it's moving to a different droppable section
-    if (source.droppableId !== destination.droppableId) {
+    const task = sourceTasks.find((t) => t.id === draggableId);
+    if (source.droppableId !== destination.droppableId && task) {
       dispatch(
         moveTask({
           from: source.droppableId,
@@ -76,14 +54,14 @@ const App = () => {
     <DragDropContext onDragEnd={handleDragEnd}>
       <Box display="flex">
         {/* Sidebar component */}
-        <Box 
-          sx={{ 
-            position: 'fixed', 
-            top: 0, 
-            left: 0, 
-            height: '100vh', 
-            width: '220px', // Adjust width as per your design
-            backgroundColor: '#f4f4f4' // Add background color if needed
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            height: '100vh',
+            width: '220px',
+            backgroundColor: '#f4f4f4',
           }}
         >
           <Sidebar />
@@ -91,9 +69,35 @@ const App = () => {
 
         {/* Main content */}
         <Box display="flex" flexDirection="column" width="100%" p={2} ml="280px">
-            <h1>Mobile App</h1>
-          {/* TaskFilter component with handleFilterChange function */}
-          <TaskFilter onFilterChange={handleFilterChange} />
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Search for anything..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              style: {
+                backgroundColor: '#f8f8f8', // Light gray background like the image
+                borderRadius: '30px', // Rounded corners
+                borderColor: 'transparent', // Remove border
+                padding: '10px 20px', // Add padding for better spacing
+              },
+            }}
+            sx={{
+              width: '300px', 
+               
+            }}
+          />
+
+          <h1>Mobile App</h1>
+
+          {/* TaskFilter component */}
+          <TaskFilter onFilterChange={() => {}} />
 
           <Box display="flex" flexDirection="row" width="100%">
             {/* To Do Task Section */}

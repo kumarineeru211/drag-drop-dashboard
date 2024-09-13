@@ -31,7 +31,10 @@ const TaskSection = ({ title, section }) => {
     >
       {/* Section Title and Add Button */}
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="h6">
+          {/* Show title and task count */}
+          {title} ({tasks.length})
+        </Typography>
 
         {/* Show Add Task button only for To Do section */}
         {isTodoSection && (
@@ -58,7 +61,7 @@ const TaskSection = ({ title, section }) => {
       {/* Tasks or No Tasks message */}
       {tasks.length ? (
         tasks.map((task, index) => (
-          <TaskCard key={task.id} task={task} index={index}  section={section}/>
+          <TaskCard key={task.id} task={task} index={index} section={section} />
         ))
       ) : (
         <Typography>No tasks available</Typography>
