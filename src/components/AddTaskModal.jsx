@@ -21,6 +21,13 @@ const AddTaskModal = ({ isOpen, onClose, section }) => {
         date: dateTime, // Add the selected date and time to the task object
       };
       dispatch(addTask({ section, task: newTask }));
+      
+      // Clear all input fields after submission
+      setTaskName('');
+      setDescription('');
+      setPriority('Low');
+      setDateTime('');
+      
       onClose();
     }
   };
