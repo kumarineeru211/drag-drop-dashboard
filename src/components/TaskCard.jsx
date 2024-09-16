@@ -9,7 +9,7 @@ const TaskCard = ({ task, index, section }) => {
   const dispatch = useDispatch();
 
   // State for menu and dialog
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);  
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editedTask, setEditedTask] = useState({ title: task.title, description: task.description });
 

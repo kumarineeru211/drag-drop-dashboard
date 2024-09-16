@@ -40,22 +40,31 @@ const taskSlice = createSlice({
     },
 
     // Move a task from one section to another and update both tasks and allTasks
-    moveTask: (state, action) => {
-      const { from, to, task } = action.payload;
-
-      // Remove the task from the 'from' section
-      state.tasks[from] = state.tasks[from].filter((t) => t.id !== task.id);
-      state.allTasks[from] = state.allTasks[from].filter((t) => t.id !== task.id); // Update the backup
-
-      // Add the task to the 'to' section
-      state.tasks[to].push(task);
-      state.allTasks[to].push(task); // Update the backup
-
-      saveTasksToLocalStorage(state.tasks); // Save to localStorage
+     // Move a task from one section to another and update both tasks and allTasks
+     moveTask: (state, action) => {
+      const { from, to, task, updatedTasks } = action.payload;
+    
+      // If moving within the same section (reordering tasks)
+      if (from === to) {
+        state.tasks[to] = updatedTasks; // Update reordered tasks in that section
+        state.allTasks[to] = updatedTasks; // Update backup for that section
+      } else {
+        // Moving the task from one section to another
+        // Remove task from the 'from' section
+        state.tasks[from] = state.tasks[from].filter((t) => t.id !== task.id);
+        state.allTasks[from] = state.allTasks[from].filter((t) => t.id !== task.id); // Update backup
+    
+        // Add task to the 'to' section at the new index
+        state.tasks[to] = updatedTasks; // Add to destination with updated order
+        state.allTasks[to] = updatedTasks; // Update backup for destination section
+      }
+    
+      saveTasksToLocalStorage(state.tasks); // Save updated tasks to localStorage
     },
+    
 
     // Edit an existing task
-editTask: (state, action) => {
+    editTask: (state, action) => {
   const { section, taskId, updatedTask } = action.payload;
 
   // Ensure the section exists
@@ -139,8 +148,7 @@ filterTasks: (state, action) => {
   state.tasks.inProgress = filterByPriorityAndDate(state.allTasks.inProgress);
   state.tasks.done = filterByPriorityAndDate(state.allTasks.done);
 
-  
-}
+  }
 
 
 

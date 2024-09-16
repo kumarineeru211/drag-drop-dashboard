@@ -1,4 +1,4 @@
-import { Box, TextField, InputAdornment } from '@mui/material';
+import {TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Sidebar from './components/Sidebar';
 import TaskSection from './components/TaskSection';
@@ -37,25 +37,61 @@ const App = () => {
   };
 
   const handleDragEnd = (result) => {
+    // If there's no valid destination, exit early
     if (!result.destination) return;
-    const { source, destination, draggableId } = result;
-
-    let sourceTasks;
-    if (source.droppableId === 'todo') sourceTasks = todo;
-    else if (source.droppableId === 'inProgress') sourceTasks = inProgress;
-    else if (source.droppableId === 'done') sourceTasks = done;
-
-    const task = sourceTasks.find((t) => t.id === draggableId);
-    if (source.droppableId !== destination.droppableId && task) {
-      dispatch(
-        moveTask({
-          from: source.droppableId,
-          to: destination.droppableId,
-          task,
-        })
-      );
+  
+    const { source, destination } = result;
+  
+    // If the source and destination are the same and the index didn't change, exit
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+  
+    // If task is moved within the same section
+    if (source.droppableId === destination.droppableId) {
+      // Get tasks of the section where the task is being reordered
+      let sourceTasks = Array.from(getTasksForSection(source.droppableId));
+      
+      // Remove the dragged task from its original index
+      let [movedTask] = sourceTasks.splice(source.index, 1);
+      
+      // Insert the task at the new index (destination index)
+      sourceTasks.splice(destination.index, 0, movedTask);
+  
+      // Dispatch the moveTask action to update the state
+      dispatch(moveTask({
+        from: source.droppableId,
+        to: source.droppableId, // same section
+        task: movedTask,
+        updatedTasks: sourceTasks, // send the updated order
+      }));
+    } else {
+      // Moving the task to a different section
+      let sourceTasks = getTasksForSection(source.droppableId);
+      let destinationTasks = Array.from(getTasksForSection(destination.droppableId));
+  
+      // Find the task being moved
+      let movedTask = sourceTasks.find((t) => t.id === result.draggableId);
+  
+      // Remove the task from the source section
+      sourceTasks = sourceTasks.filter((t) => t.id !== result.draggableId);
+  
+      // Insert the task into the destination section at the correct index
+      destinationTasks.splice(destination.index, 0, movedTask);
+  
+      // Dispatch the moveTask action to update both source and destination
+      dispatch(moveTask({
+        from: source.droppableId,
+        to: destination.droppableId,
+        task: movedTask,
+        updatedTasks: destinationTasks, // the new order in the destination section
+      }));
     }
   };
+  
 
   const getTasksForSection = (section) => {
     if (section === 'todo') return todo;
