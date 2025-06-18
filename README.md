@@ -1,27 +1,57 @@
+# 📝 Task Manager Dashboard
 
-## 1. Task Management
-Add Task:
-Implement a feature to add tasks in each section.
-Tasks should have dynamic name and description.
-Other details can be hardcoded for simplicity.
-## 2.Move Tasks:
-Implement the functionality to move tasks from one section to another (e.g., dragging a task from "To Do" to "In Progress").
-## 3. Filtering
-Task Filtering:
-Implement a filtering feature that allows users to filter tasks based on certain criteria.
-You can choose the criteria (e.g., task category, due date, priority).
-## 4. State Management
-Redux:
-Use Redux to manage the state of the application.
-Ensure the application state is persistent using Local Storage. This means that tasks and their states should remain intact even after a page refresh.
+A fully responsive **Drag and drope  Taskboard** built with **React**, **TailwindCSS**, and **Vite**, featuring drag-and-drop support and persistent localStorage-based state.
+
+## 🚀 Features
+
+- 🗂️ Three default columns:
+  - **To Do**
+  - **In Progress**
+  - **Done**
+  
+- ➕ Add new tasks via a **modal form**
+
+- ✏️ Edit and 🗑️ delete tasks
+
+- 📦 Drag and drop tasks across columns
+
+- 💾 Persistent data using **localStorage**
+
+- 🌙 Light / Dark mode toggle
+
+- 📱 Fully responsive layout (mobile-first design)
+
+## 📸 Screenshots
+
+### 💻 Desktop View
+
+ 
+
+### 📱 Mobile View
 
 
 
-### cd react-app
+## 🛠️ Tech Stack
 
-##  Install dependencies
- npm install
+- [React](https://reactjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
+- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
+- LocalStorage (for data persistence)
+
+## 📦 Installation & Setup
+
+```bash
+# 1. Clone the repository
+git clone  https://github.com/your-username/task-manager-dashboard.git](https://github.com/kumarineeru211/drag-drop-dashboard/)
+
+# 2. Navigate into the project directory
+cd task-board
+
+# 3. Install dependencies
+npm install
+
+# 4. Start the development server
+npm run dev
 
 
-## Start the development server
- npm run dev
